@@ -41,6 +41,24 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("Hi", $newResponse->getBody()->getContents());
     }
 
+    public function testAttributeSet() {
+        $renderer = new \Bnf\PugView\PugRenderer([
+            'extension' => '.pug',
+            'basedir' => 'tests/templates/'
+        ], [
+            "hello" => "Hello"
+        ]);
+
+        $headers = new Headers();
+        $body = new Body(fopen('php://temp', 'r+'));
+        $response = new Response(200, $headers, $body);
+
+        $renderer->set('hello', 'Hi');
+        $newResponse = $renderer->render('test', [], $response);
+        $newResponse->getBody()->rewind();
+        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
+    }
+
     public function testExceptionInTemplate() {
         $renderer = new \Bnf\PugView\PugRenderer([
             'extension' => '.pug',
