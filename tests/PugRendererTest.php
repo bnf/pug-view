@@ -129,6 +129,21 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("Hi", $newResponse->getBody()->getContents());
     }
 
+    /**
+     * @expectedException Exception
+     */
+    public function testNoResponse() {
+        $renderer = new \Bnf\PugView\PugRenderer([
+            'extension' => '.pug',
+            'basedir' => 'tests/templates'
+        ]);
+
+        $headers = new Headers();
+        $body = new Body(fopen('php://temp', 'r+'));
+        $response = new Response(200, $headers, $body);
+
+        $renderer->render('adfadftestTemplate', []);
+    }
 
     /**
      * @expectedException RuntimeException
