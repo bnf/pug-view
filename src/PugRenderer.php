@@ -88,7 +88,7 @@ class PugRenderer
 
         $input = rtrim($this->settings['basedir'], '/') . '/' . $template . $this->settings['extension'];
         if (!is_file($input)) {
-            throw new \RuntimeException("View cannot render `$template` because the template does not exist");
+            throw new \RuntimeException("View cannot render `$input` because the template does not exist");
         }
         $filename = null;
 
