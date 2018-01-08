@@ -20,7 +20,7 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
 
         $newResponse->getBody()->rewind();
 
-        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
+        $this->assertEquals("Hi\n", $newResponse->getBody()->getContents());
     }
 
     public function testAttributeMerging() {
@@ -39,7 +39,7 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
             "hello" => "Hi"
         ], $response);
         $newResponse->getBody()->rewind();
-        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
+        $this->assertEquals("Hi\n", $newResponse->getBody()->getContents());
     }
 
     public function testAttributeSet() {
@@ -57,7 +57,7 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
         $renderer->set('hello', 'Hi');
         $newResponse = $renderer->render('test', [], $response);
         $newResponse->getBody()->rewind();
-        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
+        $this->assertEquals("Hi\n", $newResponse->getBody()->getContents());
     }
 
     public function testMiddlewareInvoke() {
@@ -78,7 +78,7 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
         $renderer->set('hello', 'Hi');
         $newResponse = $renderer->render('test');
         $newResponse->getBody()->rewind();
-        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
+        $this->assertEquals("Hi\n", $newResponse->getBody()->getContents());
     }
 
     public function testCustomPug() {
@@ -97,36 +97,7 @@ class PugRendererTest extends PHPUnit_Framework_TestCase
         $renderer->set('hello', 'Hi');
         $newResponse = $renderer->render('test', [], $response);
         $newResponse->getBody()->rewind();
-        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
-    }
-
-    public function testExceptionInTemplate() {
-        $renderer = new \Bnf\PugView\PugRenderer([
-            'extension' => '.pug',
-            'basedir' => 'tests/templates/'
-        ]);
-
-        $headers = new Headers();
-        $body = new Body(fopen('php://temp', 'r+'));
-        $response = new Response(200, $headers, $body);
-
-        try {
-            $newResponse = $renderer->render('test-exception', [], $response);
-        } catch (Throwable $t) { // PHP 7+
-            // Simulates an error template
-            $newResponse = $renderer->render('test', [
-                "hello" => "Hi"
-            ]);
-        } catch (Exception $e) { // PHP < 7
-            // Simulates an error template
-            $newResponse = $renderer->render('test', [
-                "hello" => "Hi"
-            ], $response);
-        }
-
-        $newResponse->getBody()->rewind();
-
-        $this->assertEquals("Hi", $newResponse->getBody()->getContents());
+        $this->assertEquals("Hi\n", $newResponse->getBody()->getContents());
     }
 
     /**
