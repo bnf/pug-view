@@ -1,9 +1,9 @@
 <?php
 namespace Bnf\PugView;
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
-use \Pug\Pug;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Pug\Pug;
 
 /**
  * PugRenderer
@@ -86,13 +86,12 @@ class PugRenderer
 
         $vars += $this->locals;
 
-        $input = rtrim($this->settings['basedir'], '/') . '/' . $template . $this->settings['extension'];
-        if (!is_file($input)) {
-            throw new \RuntimeException("View cannot render `$input` because the template does not exist");
+        $filename = rtrim($this->settings['basedir'], '/') . '/' . $template . $this->settings['extension'];
+        if (!is_file($filename)) {
+            throw new \RuntimeException("View cannot render `$filename` because the template does not exist");
         }
-        $filename = null;
 
-        $output = $this->pug->render($input, $filename, $vars);
+        $output = $this->pug->renderFile($filename, $vars);
         $this->response->getBody()->write($output);
 
         return $this->response;
