@@ -32,7 +32,7 @@ $container['view'] = function($c) {
 };
 
 /* PugRenderer is added as middleware to automatically inject the $response object. */
-$app->add($container->get('view'));
+$app->add('view');
 
 /* Add global template variables */
 $app->add(function($request, $response, $next) {
